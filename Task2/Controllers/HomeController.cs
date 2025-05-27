@@ -9,9 +9,10 @@ namespace Task2.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPizzaRepository _pizzaRepository;
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPizzaRepository pizzaRepository)
         {
             _logger = logger;
+            _pizzaRepository = pizzaRepository;
         }
 
         public IActionResult Index()
