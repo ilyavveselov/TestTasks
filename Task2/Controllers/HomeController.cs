@@ -26,6 +26,13 @@ namespace Task2.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var pizzas = _pizzaRepository.GetAllPizzas();
+            return Json(pizzas);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
