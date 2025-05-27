@@ -121,5 +121,11 @@ namespace Task2.Repositories
         {
             return _pizzas;
         }
+
+        public PizzaModel GetPizzaById(int id)
+        {
+            var foundedPizza = _pizzas.FirstOrDefault(p => p.Id == id);
+            return foundedPizza;
+        }
     }
 }
