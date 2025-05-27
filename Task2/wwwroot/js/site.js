@@ -38,7 +38,7 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
                 <div class="pizza-card-header">
                     ${hitHTML}
                     <img class="pizza-card-img"
-                         src="${pizza.image}" />
+                         src="${pizza.image}" alt=${pizza.name}/>
                     <span class="pizza-card-name">
                         <a href="/Home/Details/${pizza.id}">
                             ${pizza.name}
@@ -59,7 +59,7 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
                 <div class="pizza-card-info">
                     <span class="pizza-card-price">${pizza.price} Р</span>
                     <span class="pizza-card-weight">${pizza.weight} гр</span>
-                    ${halfOptionHTML}
+                    <span class="pizza-card-half">${halfOptionHTML}</span>
                 </div>
                 <button class="in-cart-button">В корзину</button>
             </div>

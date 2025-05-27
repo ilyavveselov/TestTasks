@@ -51,11 +51,13 @@
             <div class="pizza-card-info">
                 <span class="pizza-card-price">@pizza.Price Р</span>
                 <span class="pizza-card-weight">@pizza.Weight гр</span>
-                @if (pizza.ShowHalf)
-                {
-                    var halfClass = pizza.CanHalf ? "active" : "disable";
-                    <span class="pizza-card-half-selector @halfClass">1/2</span>
-                }
+                <span class="pizza-card-half">
+                    @if (pizza.ShowHalf)
+                    {
+                        var halfClass = pizza.CanHalf ? "active" : "disable";
+                        <span class="pizza-card-half-selector @halfClass">1/2</span>
+                    }
+                </span>
             </div>
 
             <button class="in-cart-button">В корзину</button>
