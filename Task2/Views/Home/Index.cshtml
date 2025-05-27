@@ -1,0 +1,60 @@
+﻿@model List<Task2.Models.PizzaModel>
+@using Task2.RazorHelpers
+@{
+    ViewData["Title"] = "Home Page";
+
+    var availableSizes = new List<int> { 30, 40, 60 };
+    var availableTypes = new List<string> { "Традиционное", "Толстое" };
+}
+
+<div class="row">
+    @foreach (var pizza in Model)
+    {
+        var activeSize = pizza.Sizes.Contains(availableSizes[0])
+        ? availableSizes[0]
+        : pizza.Sizes.FirstOrDefault(size => availableSizes.Contains(size));
+
+        var activeType = pizza.Types?.Contains(availableTypes[0]) == true
+        ? availableTypes[0]
+        : pizza.Types?.FirstOrDefault(type => availableTypes.Contains(type));
+
+        <div class="pizza-card">
+            <div class="pizza-card-header">
+                @if (pizza.IsHit)
+                {
+                    <span class="pizza-card-hit">HIT</span>
+                }
+                <img class="pizza-card-img" src="@pizza.Image" alt="@pizza.Name" />
+                <span class="pizza-card-name">@pizza.Name</span>
+            </div>
+
+            <div class="pizza-card-description">
+                @pizza.Description
+            </div>
+
+            <div class="pizza-card-selectors">
+                <div class="size-selector">
+                    @Html.RenderSelectors(availableSizes, pizza.Sizes, activeSize)
+                </div>
+                <div class="type-selector">
+                    @if (pizza.Types?.Any() == true)
+                    {
+                        @Html.RenderSelectors(availableTypes, pizza.Types, activeType)
+                    }
+                </div>
+            </div>
+
+            <div class="pizza-card-info">
+                <span class="pizza-card-price">@pizza.Price Р</span>
+                <span class="pizza-card-weight">@pizza.Weight гр</span>
+                @if (pizza.ShowHalf)
+                {
+                    var halfClass = pizza.CanHalf ? "active" : "disable";
+                    <span class="pizza-card-half-selector @halfClass">1/2</span>
+                }
+            </div>
+
+            <button class="in-cart-button">В корзину</button>
+        </div>
+    }
+</div>
