@@ -9,7 +9,21 @@
     </div>
 </body>
 </html>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+    function fillSelectors(referenceArray, selectorData, selectedSelector){
+        let returnHTML = '';
+        referenceArray.forEach((item) =>{
+            if(selectorData.includes(item)){
+                const activeClass = (item === selectedSelector) ? 'active' : '';
+                returnHTML += `<span class="size ${activeClass}">${item}</span>`;
+            }
+            else{
+                returnHTML += `<span class="size disable">${item}</span>`;
+            }
+        })
+        return returnHTML;
+    }
     const pizzas = [
             {
                 name: "Capriccio",
@@ -143,4 +157,57 @@
                 isHit: false
             }
         ];
+    pizzas.forEach((pizza) => {
+        const sizes = [30,40,60];
+        const types = ["Традиционное", "Толстое"];
+        const activeSize = pizza.sizes.includes(sizes[0])
+            ? sizes[0]
+            : pizza.sizes.find(size => sizes.includes(size));
+        let sizesHTML = fillSelectors(sizes, pizza.sizes, activeSize);
+        let typesHTML = '';
+        if(pizza.types){
+            const activeType = pizza.types.includes(types[0])
+                ? types[0]
+                : pizza.types.find(type => types.includes(type))
+            typesHTML = fillSelectors(types, pizza.types, activeType)
+        }
+        const hitHTML = pizza.isHit
+            ? '<span class="pizza-card-hit">HIT</span>'
+            : '';
+        let halfOptionHTML = '';
+        if(pizza.showHalf){
+            pizza.canHalf
+                ? halfOptionHTML += '<span class="pizza-card-half-selector active">1/2</span>'
+                : halfOptionHTML += '<span class="pizza-card-half-selector disable">1/2</span>'
+        }
+        const card = `
+            <div class="pizza-card">
+                <div class="pizza-card-header">
+                    ${hitHTML}
+                    <img class="pizza-card-img"
+                         src="${pizza.image}" />
+                    <span class="pizza-card-name">${pizza.name}</span>
+                </div>
+                <div class="pizza-card-description">
+                    ${pizza.description}
+                </div>
+                <div class="pizza-card-selectors">
+                    <div class="size-selector">
+                        ${sizesHTML}
+                    </div>
+                    <div class="type-selector">
+                        ${typesHTML}
+                    </div>
+                </div>
+                <div class="pizza-card-info">
+                    <span class="pizza-card-price">${pizza.price}Р</span>
+                    <span class="pizza-card-weight">${pizza.weight} гр</span>
+                    ${halfOptionHTML}
+                </div>
+                <button class="in-cart-button">В корзину</button>
+            </div>
+        `;
+
+        $(".pizza-list").append(card);
+    });
 </script>
