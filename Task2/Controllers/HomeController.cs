@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Task2.Models;
+using Task2.Repositories;
 
 namespace Task2.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private readonly IPizzaRepository _pizzaRepository;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -15,7 +16,8 @@ namespace Task2.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var pizzas = _pizzaRepository.GetAllPizzas();
+            return View(pizzas);
         }
 
         public IActionResult Privacy()
