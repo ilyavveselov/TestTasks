@@ -34,12 +34,16 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
             : halfOptionHTML += '<span class="pizza-card-half-selector disable">1/2</span>'
     }
     const card = `
-            <div class="pizza-card">
+            <div class="pizza-card" data-id=${pizza.id}>
                 <div class="pizza-card-header">
                     ${hitHTML}
                     <img class="pizza-card-img"
                          src="${pizza.image}" />
-                    <span class="pizza-card-name">${pizza.name}</span>
+                    <span class="pizza-card-name">
+                        <a href="/Home/Details/${pizza.id}">
+                            ${pizza.name}
+                        </a>
+                    </span>
                 </div>
                 <div class="pizza-card-description">
                     ${pizza.description}
@@ -61,4 +65,16 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
             </div>
         `;
     return card;
+}
+function setRedirectToDetailsOnAllPizzaImages() {
+    $(document).on('click', '.pizza-card-img', function () {
+        const parent = $(this).closest('.pizza-card');
+        const pizzaId = parent.data('id');
+        if (pizzaId) {
+            window.location.href = `/Home/Details/${pizzaId}`;
+        }
+        else {
+            console.log(parent, "не имеет атрибут data-id");
+        }
+    });
 }

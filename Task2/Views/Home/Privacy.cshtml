@@ -12,9 +12,12 @@
 </body>
 </html>
 <script>
+    setRedirectToDetailsOnAllPizzaImages();
+
     const avaiableSizes = [30,40,60];
     const avaiableTypes = ["Традиционное", "Толстое"];
     const pizzaContainer = $('#pizza-container');
+
     $.ajax({
         url: '/Home/GetAll',
         method: 'GET',
