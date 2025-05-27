@@ -62,3 +62,16 @@
         </div>
     }
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).on('click', '.pizza-card-img', function() {
+        const parent = $(this).closest('.pizza-card');
+        const pizzaId = parent.data('id');
+        if(pizzaId){
+            window.location.href = `/Home/Details/${pizzaId}`;
+        }
+        else{
+           console.log(parent, "не имеет атрибут data-id");
+        }
+    });
+</script>
