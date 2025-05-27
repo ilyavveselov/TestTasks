@@ -7,7 +7,7 @@
     var availableTypes = new List<string> { "Традиционное", "Толстое" };
 }
 
-<div class="row">
+<div id="pizza-container">
     @foreach (var pizza in Model)
     {
         var activeSize = pizza.Sizes.Contains(availableSizes[0])
