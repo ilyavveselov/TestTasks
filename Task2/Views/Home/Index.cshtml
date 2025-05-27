@@ -34,12 +34,12 @@
 
             <div class="pizza-card-selectors">
                 <div class="size-selector">
-                    @Html.RenderSelectors(availableSizes, pizza.Sizes, activeSize)
+                    @Html.RenderSelectors(availableSizes, pizza.Sizes, activeSize, true)
                 </div>
                 <div class="type-selector">
                     @if (pizza.Types?.Any() == true)
                     {
-                        @Html.RenderSelectors(availableTypes, pizza.Types, activeType)
+                        @Html.RenderSelectors(availableTypes, pizza.Types, activeType, false)
                     }
                 </div>
             </div>

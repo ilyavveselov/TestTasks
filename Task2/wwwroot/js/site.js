@@ -1,12 +1,12 @@
-﻿function fillSelectors(referenceArray, selectorData, selectedSelector) {
+﻿function fillSelectors(referenceArray, selectorData, selectedSelector, isSizeSelector) {
     let returnHTML = '';
     referenceArray.forEach((item) => {
         if (selectorData.includes(item)) {
             const activeClass = (item === selectedSelector) ? 'active' : '';
-            returnHTML += `<span class="size ${activeClass}">${item}</span>`;
+            returnHTML += `<span class="size ${activeClass}">${item} ${isSizeSelector ? 'см' : ''}</span>`;
         }
         else {
-            returnHTML += `<span class="size disable">${item}</span>`;
+            returnHTML += `<span class="size disable">${item} ${isSizeSelector ? 'см' : ''}</span>`;;
         }
     })
     return returnHTML;
@@ -16,13 +16,13 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
     const activeSize = pizza.sizes.includes(avaiableSizes[0])
         ? avaiableSizes[0]
         : pizza.sizes.find(size => avaiableSizes.includes(size));
-    let sizesHTML = fillSelectors(avaiableSizes, pizza.sizes, activeSize);
+    let sizesHTML = fillSelectors(avaiableSizes, pizza.sizes, activeSize, true);
     let typesHTML = '';
     if (pizza.types.length > 0) {
         const activeType = pizza.types.includes(avaiableTypes[0])
             ? avaiableTypes[0]
             : pizza.types.find(type => avaiableTypes.includes(type))
-        typesHTML = fillSelectors(avaiableTypes, pizza.types, activeType)
+        typesHTML = fillSelectors(avaiableTypes, pizza.types, activeType, false)
     }
     const hitHTML = pizza.isHit
         ? '<span class="pizza-card-hit">HIT</span>'

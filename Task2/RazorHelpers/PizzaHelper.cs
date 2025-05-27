@@ -11,7 +11,8 @@ namespace Task2.RazorHelpers
             this IHtmlHelper htmlHelper,
             List<T> referenceArray,
             List<T> selectorData,
-            T selectedSelector
+            T selectedSelector,
+            bool isSizeSelector
             )
         {
             var resultHtml = new StringBuilder();
@@ -20,11 +21,11 @@ namespace Task2.RazorHelpers
                 if (selectorData.Contains(item))
                 {
                     var activeClass = item.Equals(selectedSelector) ? "active" : "";
-                    resultHtml.Append($"<span class=\"size {activeClass}\">{item}</span>");
+                    resultHtml.Append($"<span class=\"size {activeClass}\">{item} {(isSizeSelector ? "см" : "")}</span>");
                 }
                 else
                 {
-                    resultHtml.Append($"<span class=\"size disable\">{item}</span>");
+                    resultHtml.Append($"<span class=\"size disable\">{item} {(isSizeSelector ? "см" : "")}</span>");
                 }
             }
             return new HtmlString(resultHtml.ToString());
