@@ -1,6 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
-
-<p>Use this page to detail your site's privacy policy.</p>
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <div id="pizza-container">
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js"></script>
+</body>
+</html>
+<script>
+    const avaiableSizes = [30,40,60];
+    const avaiableTypes = ["Традиционное", "Толстое"];
+    const pizzaContainer = $('#pizza-container');
+    $.ajax({
+        url: '/Home/GetAll',
+        method: 'GET',
+        success: function(data){
+            pizzaContainer.empty();
+            data.forEach((pizza) => {
+                const cardHtml = renderPizzaCard(pizza, avaiableSizes, avaiableTypes);
+                pizzaContainer.append(cardHtml);
+            })
+        },
+        error: function(data) {
+            console.log(data);
+            pizzaContainer.html('<p>Ошибка загрузки данных</p>');
+        }
+    })
+</script>
