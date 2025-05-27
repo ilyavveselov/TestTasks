@@ -18,14 +18,18 @@
         ? availableTypes[0]
         : pizza.Types?.FirstOrDefault(type => availableTypes.Contains(type));
 
-        <div class="pizza-card">
+        <div class="pizza-card" data-id=@pizza.Id>
             <div class="pizza-card-header">
                 @if (pizza.IsHit)
                 {
                     <span class="pizza-card-hit">HIT</span>
                 }
                 <img class="pizza-card-img" src="@pizza.Image" alt="@pizza.Name" />
-                <span class="pizza-card-name">@pizza.Name</span>
+                <span class="pizza-card-name">
+                    <a href="/Home/Details/@pizza.Id">
+                        @pizza.Name
+                    </a>
+                </span>
             </div>
 
             <div class="pizza-card-description">
