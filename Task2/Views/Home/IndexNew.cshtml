@@ -1,12 +1,17 @@
 ﻿@model List<Task2.Models.PizzaModel>
 @using Task2.RazorHelpers
-@{
 
-}
 <div id="pizza-container">
+    <div class="modal fade" id="pizzaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        </div>
+    </div>
+    @foreach (var pizza in Model)
+    {
+        var (activeSize, activeType) = Html.GetActiveSelectors(pizza);
 
+        @await Html.PartialAsync("PizzaPartials/_Card", pizza)
+    }
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-
-</script>
+</<script></script>

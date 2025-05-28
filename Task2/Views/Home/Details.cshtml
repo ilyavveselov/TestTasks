@@ -2,52 +2,8 @@
 @using Task2.RazorHelpers
 @{
     ViewData["Title"] = "Home Page";
-
-    var availableSizes = new List<int> { 30, 40, 60 };
-    var availableTypes = new List<string> { "Традиционное", "Толстое" };
 }
 
-@{
-    var activeSize = Model.Sizes.Contains(availableSizes[0])
-    ? availableSizes[0]
-    : Model.Sizes.FirstOrDefault(size => availableSizes.Contains(size));
-
-    var activeType = Model.Types?.Contains(availableTypes[0]) == true
-    ? availableTypes[0]
-    : Model.Types?.FirstOrDefault(type => availableTypes.Contains(type));
-}
-<div class="pizza-card-detail">
-    <img class="pizza-card-img" src="@Model.Image" alt="@Model.Name" />
-    <div class="pizza-card-body">
-        <div class="pizza-card-name">@Model.Name</div>
-        <div class="pizza-card-description">
-            @Model.Description
-        </div>
-
-        <div class="pizza-card-selectors">
-            <div class="size-selector">
-                @Html.RenderSelectors(availableSizes, Model.Sizes, activeSize, true)
-            </div>
-            <div class="type-selector">
-                @if (Model.Types?.Any() == true)
-                {
-                    @Html.RenderSelectors(availableTypes, Model.Types, activeType, false)
-                }
-            </div>
-        </div>
-
-        <div class="pizza-card-info">
-            <span class="pizza-card-price">@Model.Price Р</span>
-            <span class="pizza-card-weight">@Model.Weight гр</span>
-            <span class="pizza-card-half">
-                @if (Model.ShowHalf)
-                {
-                    var halfClass = Model.CanHalf ? "active" : "disable";
-                    <span class="pizza-card-half-selector @halfClass">1/2</span>
-                }
-            </span>
-        </div>
-
-        <button class="in-cart-button">В корзину</button>
-    </div>
+<div class="pizza-card-modal">
+    @await Html.PartialAsync("PizzaPartials/_CardModal", Model)
 </div>
