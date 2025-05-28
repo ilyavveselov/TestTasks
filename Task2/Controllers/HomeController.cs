@@ -44,6 +44,13 @@ namespace Task2.Controllers
             return Json(pizzas);
         }
 
+        [HttpGet]
+        public IActionResult GetPizzaById(int id)
+        {
+            var pizza = _pizzaRepository.GetPizzaById(id);
+            return PartialView("PizzaPartials/_CardModal", pizza);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
