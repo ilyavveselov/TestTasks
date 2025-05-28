@@ -31,7 +31,12 @@ namespace Task2.Controllers
             var foundedPizza = _pizzaRepository.GetPizzaById(id);
             return View(foundedPizza);
         }
-
+        
+        public IActionResult IndexNew()
+        {
+            var pizzas = _pizzaRepository.GetAllPizzas();
+            return View(pizzas);
+        }
         [HttpGet]
         public IActionResult GetAll()
         {
