@@ -18,7 +18,24 @@
         const parent = $(this).closest('.pizza-card');
         const pizzaId = parent.data('id');
         if(pizzaId){
-            window.location.href = `/Home/Details/${pizzaId}`;
+            $.ajax({
+                url: "Home/GetPizzaById",
+                type: "GET",
+                data: { id: pizzaId },
+                dataType: "html",
+                success: function(data) {
+                    $('#pizzaModal .modal-dialog').html(data);
+                    $('#pizzaModal').modal('show');
+                },
+                error: function() {
+                    $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
+                    $('#pizzaModal').modal('show');
+                }
+            });
+
+            $('#pizzaModal').on('hidden.bs.modal', function() {
+                $(this).find('.modal-dialog').empty();
+            });
         }
         else{
            console.log(parent, "не имеет атрибут data-id");

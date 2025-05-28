@@ -2,10 +2,6 @@
 @using Task2.RazorHelpers
 
 <div id="pizza-container">
-    <div class="modal fade" id="pizzaModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        </div>
-    </div>
     @foreach (var pizza in Model)
     {
         @await Html.PartialAsync("PizzaPartials/_Card", pizza)
@@ -29,8 +25,8 @@
                       $('#pizzaModal').modal('show');
                   });
                   $('#pizzaModal').on('hidden.bs.modal', function () {
-                  $(this).find('.modal-dialog').empty();
-              });
+                    $(this).find('.modal-dialog').empty();
+                  });
           }
           else{
              console.log(parent, "не имеет атрибут data-id");
