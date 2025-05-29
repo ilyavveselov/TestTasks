@@ -42,8 +42,39 @@ namespace Task2.Controllers
         public IActionResult GetPizzaById(int id)
         {
             var pizza = _pizzaRepository.GetPizzaById(id);
-            if(pizza == null) return NotFound();
+            if (pizza == null)
+            {
+                _logger.LogError("Пицца не найдена");
+                return NotFound();
+            }
             return Json(pizza);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create([Bind(include: "Name, Image, Description, Sizes, Types, Price, Weight")]PizzaModel pizza)
+        {
+            if (ModelState.IsValid)
+            {
+                _pizzaRepository.CreatePizza(pizza);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var entry in ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        _logger.LogError($"Ошибка валидации поля {entry.Key}: {error.ErrorMessage}");
+                    }
+                }
+                return BadRequest();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -4,7 +4,7 @@ namespace Task2.Repositories
 {
     public class PizzaRepository : IPizzaRepository
     {
-        private readonly List<PizzaModel> _pizzas = new List<PizzaModel>
+        private List<PizzaModel> _pizzas = new List<PizzaModel>
         {
             new() {
                 Id = 1,
@@ -126,6 +126,11 @@ namespace Task2.Repositories
         {
             var foundedPizza = _pizzas.FirstOrDefault(p => p.Id == id);
             return foundedPizza;
+        }
+
+        public void CreatePizza(PizzaModel pizza)
+        {
+            _pizzas.Add(pizza);
         }
     }
 }

@@ -7,5 +7,7 @@ namespace Task2.Repositories
         List<PizzaModel> GetAllPizzas();
 
         PizzaModel GetPizzaById(int id);
+
+        void CreatePizza(PizzaModel pizza);
     }
 }
