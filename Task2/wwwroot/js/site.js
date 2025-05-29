@@ -130,13 +130,13 @@ function renderModalPizzaCard(pizza) {
     `;
     return card;
 }
-function setRedirectToModalOnAllPizzaImages() {
+function setRedirectToModalOnAllPizzas() {
     $(document).on('click', '.pizza-card-img, .pizza-card-name', function () {
         const parent = $(this).closest('.pizza-card');
         const pizzaId = parent.data('id');
         if (pizzaId) {
             $.ajax({
-                url: "/Home/GetPizzaByIdJSON",
+                url: "/Home/GetPizzaById",
                 type: "GET",
                 data: { id: pizzaId },
                 dataType: "html",

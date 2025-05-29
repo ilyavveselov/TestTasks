@@ -25,12 +25,6 @@ namespace Task2.Controllers
         {
             return View();
         }
-
-        public IActionResult Details(int id)
-        {
-            var foundedPizza = _pizzaRepository.GetPizzaById(id);
-            return View(foundedPizza);
-        }
         
         public IActionResult IndexNew()
         {
@@ -46,13 +40,6 @@ namespace Task2.Controllers
 
         [HttpGet]
         public IActionResult GetPizzaById(int id)
-        {
-            var pizza = _pizzaRepository.GetPizzaById(id);
-            return PartialView("PizzaPartials/_CardModal", pizza);
-        }
-
-        [HttpGet]
-        public IActionResult GetPizzaByIdJSON(int id)
         {
             var pizza = _pizzaRepository.GetPizzaById(id);
             if(pizza == null) return NotFound();

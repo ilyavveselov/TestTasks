@@ -12,8 +12,6 @@
 </body>
 </html>
 <script>
-    setRedirectToModalOnAllPizzaImages();
-
     const pizzaContainer = $('#pizza-container');
 
     $.ajax({
@@ -31,4 +29,6 @@
             pizzaContainer.html('<p>Ошибка загрузки данных</p>');
         }
     })
+
+    setRedirectToModalOnAllPizzas();
 </script>
