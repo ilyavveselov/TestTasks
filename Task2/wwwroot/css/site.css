@@ -181,6 +181,8 @@ a {
     max-width: 800px;
     width: 95%;
     margin: 1.75rem auto;
+    display: flex;
+    justify-content: center;
 }
 
 @media (min-width: 1200px) {

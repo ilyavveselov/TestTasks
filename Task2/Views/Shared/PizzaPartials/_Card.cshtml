@@ -14,16 +14,7 @@
             <span class="pizza-card-hit">HIT</span>
         }
         <img class="pizza-card-img" src="@Model.Image" alt="@Model.Name" />
-        <span class="pizza-card-name">
-            @if (isHeaderLink)
-            {
-                <a href="/Home/Details/@Model.Id">@Model.Name</a>
-            }
-            else
-            {
-                @Model.Name
-            }
-        </span>
+        <span class="pizza-card-name">@Model.Name</span>
     </div>
 
     <div class="pizza-card-description">

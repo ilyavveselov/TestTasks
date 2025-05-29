@@ -8,28 +8,30 @@
     }
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js"></script>
 <script>
-       $(document).on('click', '.pizza-card-name', function (e){
-          const parent = $(this).closest('.pizza-card');
-          const pizzaId = parent.data('id');
-          if(pizzaId){
-              const url = '@Url.Action("GetPizzaById", "Home")' + '?id=' + pizzaId;
-              $.get(url)
-                  .done(function(data) {
-                      $('#pizzaModal .modal-dialog').html(data);
-                  })
-                  .fail(function() {
-                      $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
-                  })
-                  .always(function() {
-                      $('#pizzaModal').modal('show');
-                  });
-                  $('#pizzaModal').on('hidden.bs.modal', function () {
-                    $(this).find('.modal-dialog').empty();
-                  });
-          }
-          else{
-             console.log(parent, "не имеет атрибут data-id");
-          }
-      });
+    setRedirectToModalOnAllPizzaImages();
+    $(document).on('click', '.pizza-card-name', function (e){
+        const parent = $(this).closest('.pizza-card');
+        const pizzaId = parent.data('id');
+        if(pizzaId){
+            const url = '@Url.Action("GetPizzaById", "Home")' + '?id=' + pizzaId;
+            $.get(url)
+                .done(function(data) {
+                    $('#pizzaModal .modal-dialog').html(data);
+                })
+                .fail(function() {
+                    $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
+                })
+                .always(function() {
+                    $('#pizzaModal').modal('show');
+                });
+                $('#pizzaModal').on('hidden.bs.modal', function () {
+                  $(this).find('.modal-dialog').empty();
+                });
+        }
+        else{
+           console.log(parent, "не имеет атрибут data-id");
+        }
+    });
 </script>

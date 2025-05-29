@@ -12,7 +12,13 @@
     return returnHTML;
 }
 
-function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
+function getAvaiableSizes() { return [30, 40, 60] };
+function getAvaiableTypes() { return ["Традиционное", "Толстое"] };
+
+function getActiveSelectors(pizza) {
+    const avaiableSizes = getAvaiableSizes();
+    const avaiableTypes = getAvaiableTypes();
+
     const activeSize = pizza.sizes.includes(avaiableSizes[0])
         ? avaiableSizes[0]
         : pizza.sizes.find(size => avaiableSizes.includes(size));
@@ -24,6 +30,10 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
             : pizza.types.find(type => avaiableTypes.includes(type))
         typesHTML = fillSelectors(avaiableTypes, pizza.types, activeType, false)
     }
+    return { sizes: sizesHTML, types: typesHTML }
+}
+function renderPizzaCard(pizza) {
+    const selectorsHTML = getActiveSelectors(pizza);
     const hitHTML = pizza.isHit
         ? '<span class="pizza-card-hit">HIT</span>'
         : '';
@@ -40,7 +50,6 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
                     <img class="pizza-card-img"
                          src="${pizza.image}" alt=${pizza.name}/>
                     <span class="pizza-card-name">
-                        <a href="/Home/Details/${pizza.id}">
                             ${pizza.name}
                         </a>
                     </span>
@@ -50,10 +59,10 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
                 </div>
                 <div class="pizza-card-selectors">
                     <div class="size-selector">
-                        ${sizesHTML}
+                        ${selectorsHTML.sizes}
                     </div>
                     <div class="type-selector">
-                        ${typesHTML}
+                        ${selectorsHTML.types}
                     </div>
                 </div>
                 <div class="pizza-card-info">
@@ -66,12 +75,85 @@ function renderPizzaCard(pizza, avaiableSizes, avaiableTypes) {
         `;
     return card;
 }
-function setRedirectToDetailsOnAllPizzaImages() {
-    $(document).on('click', '.pizza-card-img', function () {
+function renderModalPizzaCard(pizza) {
+    pizza = JSON.parse(pizza);
+    const selectorsHTML = getActiveSelectors(pizza);
+    const hitHTML = pizza.isHit
+        ? '<span class="pizza-card-hit">HIT</span>'
+        : '';
+    let halfOptionHTML = '';
+    if (pizza.showHalf) {
+        pizza.canHalf
+            ? halfOptionHTML += '<span class="pizza-card-half-selector active">1/2</span>'
+            : halfOptionHTML += '<span class="pizza-card-half-selector disable">1/2</span>'
+    }
+    card = `
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">${pizza.name}</h5>
+        </div>
+        <div class="modal-body">
+            <div class="pizza-card-modal" data-id=${pizza.id}>
+                <div class="pizza-img-container">
+                    <img class="pizza-card-img" src="${pizza.image}" alt="${pizza.name}" />
+                </div>
+                <div class="pizza-body-modal">
+                    <div class="pizza-card-header">
+                        ${hitHTML}
+                        <span class="pizza-card-name">${pizza.name}</span>
+                    </div>
+                    <div class="pizza-card-description">
+                        ${pizza.description}
+                    </div>
+
+                    <div class="pizza-card-selectors">
+                        <div class="size-selector">
+                           ${selectorsHTML.sizes}
+                        </div>
+                        <div class="type-selector">
+                            ${selectorsHTML.types}
+                        </div>
+                    </div>
+
+                    <div class="pizza-card-info">
+                        <span class="pizza-card-price">${pizza.price} Р</span>
+                        <span class="pizza-card-weight">${pizza.weight} гр</span>
+                        <span class="pizza-card-half">
+                            ${halfOptionHTML}
+                        </span>
+                    </div>
+                    <button class="in-cart-button">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    return card;
+}
+function setRedirectToModalOnAllPizzaImages() {
+    $(document).on('click', '.pizza-card-img, .pizza-card-name', function () {
         const parent = $(this).closest('.pizza-card');
         const pizzaId = parent.data('id');
         if (pizzaId) {
-            window.location.href = `/Home/Details/${pizzaId}`;
+            $.ajax({
+                url: "/Home/GetPizzaByIdJSON",
+                type: "GET",
+                data: { id: pizzaId },
+                dataType: "html",
+                success: function (pizza) {
+                    const pizzaHtml = renderModalPizzaCard(pizza);
+                    $('#pizzaModal .modal-dialog').html(pizzaHtml);
+                    $('#pizzaModal').modal('show');
+                },
+                error: function (data) {
+                    $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
+                    $('#pizzaModal').modal('show');
+                }
+            });
+
+            $('#pizzaModal').on('hidden.bs.modal', function () {
+                $(this).find('.modal-dialog').empty();
+            });
         }
         else {
             console.log(parent, "не имеет атрибут data-id");
