@@ -1,0 +1,9 @@
+﻿@model PizzaModel
+@using Task3.RazorHelpers
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="pizza-card-modal">
+    @await Html.PartialAsync("PizzaPartials/_CardModal", Model)
+</div>

@@ -1,0 +1,56 @@
+﻿@model PizzaModel
+@using Task3.RazorHelpers
+@{
+    var (activeSize, activeType) = Html.GetActiveSelectors(Model);
+    var availableSizes = PizzaHelper.GetAvailableSizes();
+    var availableTypes = PizzaHelper.GetAvailableTypes();
+    var isHeaderLink = ViewData["IsHeaderLink"] as bool? ?? false;
+}
+
+<div class="pizza-card" data-id=@Model.Id>
+    <div class="pizza-card-header">
+        @if (Model.IsHit)
+        {
+            <span class="pizza-card-hit">HIT</span>
+        }
+        <img class="pizza-card-img" src="@Model.Image" alt="@Model.Name" />
+        <span class="pizza-card-name">
+            @if(isHeaderLink){
+                <a href="@Url.Action("Details", "Home", new {id = Model.Id})">@Model.Name</a>
+            }
+            else
+            {
+                @Model.Name
+            }
+        </span>
+    </div>
+
+    <div class="pizza-card-description">
+        @Model.Description
+    </div>
+
+    <div class="pizza-card-selectors">
+        <div class="size-selector">
+            @Html.RenderSelectors(availableSizes, Model.Sizes, activeSize, true)
+        </div>
+        <div class="type-selector">
+            @if (Model.Types?.Any() == true)
+            {
+                @Html.RenderSelectors(availableTypes, Model.Types, activeType, false)
+            }
+        </div>
+    </div>
+
+    <div class="pizza-card-info">
+        <span class="pizza-card-price">@Model.Price Р</span>
+        <span class="pizza-card-weight">@Model.Weight гр</span>
+        <span class="pizza-card-half">
+            @if (Model.ShowHalf)
+            {
+                var halfClass = Model.CanHalf ? "active" : "disable";
+                <span class="pizza-card-half-selector @halfClass">1/2</span>
+            }
+        </span>
+    </div>
+    <button class="in-cart-button">В корзину</button>
+</div>
