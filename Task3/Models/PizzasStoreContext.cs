@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Task3;
+namespace Task3.Models;
 
 public partial class PizzasStoreContext : DbContext
 {

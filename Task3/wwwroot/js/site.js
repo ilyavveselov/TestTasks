@@ -157,6 +157,8 @@ function setRedirectToModalOnAllPizzas() {
         }
         else {
             console.log(parent, "не имеет атрибут data-id");
+            $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
+            $('#pizzaModal').modal('show');
         }
     });
 }

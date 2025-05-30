@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Task3;
+namespace Task3.Models;
 
 public partial class DoughType
 {

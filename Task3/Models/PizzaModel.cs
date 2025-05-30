@@ -28,5 +28,20 @@ namespace Task3.Models
         public bool ShowHalf { get; set; } = false;
         public bool CanHalf { get; set; } = false;
         public bool IsHit { get; set; } = false;
+
+        public PizzaModel(Pizza pizza)
+        {
+            Id = pizza.Id;
+            Name = pizza.Name;
+            Image = pizza.Image;
+            Description = pizza.Description;
+            Sizes = pizza.Sizes.Select(s => s.Value).ToList();
+            Types = pizza.DoughTypes.Select(s => s.Name).ToList();
+            Price = pizza.Price;
+            Weight = pizza.Weight;
+            ShowHalf = pizza.ShowHalf;
+            CanHalf = pizza.CanHalf;
+            IsHit = pizza.IsHit;
+        }
     }
 }
