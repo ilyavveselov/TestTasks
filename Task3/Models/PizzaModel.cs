@@ -29,6 +29,7 @@ namespace Task3.Models
         public bool CanHalf { get; set; } = false;
         public bool IsHit { get; set; } = false;
 
+        public PizzaModel() { }
         public PizzaModel(Pizza pizza)
         {
             Id = pizza.Id;

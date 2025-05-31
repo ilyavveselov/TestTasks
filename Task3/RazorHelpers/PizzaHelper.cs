@@ -10,20 +10,29 @@ namespace Task3.RazorHelpers
 {
     public static class PizzaHelper
     {
-        public static List<int> GetAvailableSizes() => new List<int> { 30, 40, 60 };
-        public static List<string> GetAvailableTypes() => new List<string> { "Традиционное", "Толстое" };
-        public static (int activeSize, string activeType) GetActiveSelectors(this IHtmlHelper html, PizzaModel model)
+        public static async Task<List<int>> GetAvailableSizes(IPizzaRepository pizzaRepository) {
+            var availableSizes = await pizzaRepository.GetAvaiableSizes();
+            var sizeValues = availableSizes.Select(s => s.Value).ToList();
+            return sizeValues;
+        }
+        public static async Task<List<string>> GetAvailableTypes(IPizzaRepository pizzaRepository)
         {
-            var availableSizes = GetAvailableSizes();
-            var availableTypes = GetAvailableTypes();
+            var availableTypes = await pizzaRepository.GetAvaiableDoughTypes();
+            var typeNames = availableTypes.Select(t => t.Name).ToList();
+            return typeNames;
+        }
+        public static async Task<(int activeSize, string activeType)> GetActiveSelectors(this IHtmlHelper html, PizzaModel model, IPizzaRepository pizzaRepository)
+        {
+            var sizeValues = await GetAvailableSizes(pizzaRepository);
+            var typeNames = await GetAvailableTypes(pizzaRepository);
 
-            var activeSize = model.Sizes.Contains(availableSizes[0])
-                ? availableSizes[0]
-                : model.Sizes.FirstOrDefault(size => availableSizes.Contains(size));
+            var activeSize = model.Sizes.Contains(sizeValues[0])
+                ? sizeValues[0]
+                : model.Sizes.FirstOrDefault(size => sizeValues.Contains(size));
 
-            var activeType = model.Types?.Contains(availableTypes[0]) == true
-                ? availableTypes[0]
-                : model.Types?.FirstOrDefault(type => availableTypes.Contains(type));
+            var activeType = model.Types?.Contains(typeNames[0]) == true
+                ? typeNames[0]
+                : model.Types?.FirstOrDefault(type => typeNames.Contains(type));
 
             return (activeSize, activeType);
         }

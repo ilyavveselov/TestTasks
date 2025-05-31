@@ -8,6 +8,12 @@ namespace Task3.Repositories
 
         PizzaModel GetPizzaById(int id);
 
-        void CreatePizza(PizzaModel pizza);
+        Task CreatePizza(PizzaModel pizza);
+
+        Task EditPizza(PizzaModel model);
+
+        Task<List<Size>> GetAvaiableSizes();
+
+        Task<List<DoughType>> GetAvaiableDoughTypes();
     }
 }

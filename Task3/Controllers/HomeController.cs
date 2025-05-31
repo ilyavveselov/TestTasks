@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Task3.Models;
 using Task3.Repositories;
@@ -69,20 +70,17 @@ namespace Task3.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            ViewBag.AllSizes = await _pizzaRepository.GetAvaiableSizes();
+            ViewBag.AllDoughTypes = await _pizzaRepository.GetAvaiableDoughTypes();
+            return PartialView("PizzaPartials/_Form", new PizzaModel(new Pizza()));
         }
 
         [HttpPost]
-        public IActionResult Create([Bind(include: "Name, Image, Description, Sizes, Types, Price, Weight")] PizzaModel pizza)
+        public async Task<IActionResult> Create(PizzaModel model)
         {
-            if (ModelState.IsValid)
-            {
-                _pizzaRepository.CreatePizza(pizza);
-                return RedirectToAction("Index");
-            }
-            else
+            if (!ModelState.IsValid)
             {
                 foreach (var entry in ModelState)
                 {
@@ -91,10 +89,54 @@ namespace Task3.Controllers
                         _logger.LogError($"Ошибка валидации поля {entry.Key}: {error.ErrorMessage}");
                     }
                 }
-                return BadRequest();
+                ViewBag.AllSizes = _pizzaRepository.GetAvaiableSizes();
+                ViewBag.AllDoughTypes = _pizzaRepository.GetAvaiableDoughTypes();
+                return PartialView("PizzaPartials/_Form", model);
+            }
+
+            await _pizzaRepository.CreatePizza(model);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var sizes = await _pizzaRepository.GetAvaiableSizes();
+            var types = await _pizzaRepository.GetAvaiableDoughTypes();
+            ViewBag.AllSizes = sizes;
+            ViewBag.AllDoughTypes = types;
+            using (var db = new PizzasStoreContext())
+            {
+                var pizza = db.Pizzas.Include("Sizes").Include("DoughTypes").FirstOrDefault(p => p.Id == id);
+                if (pizza == null)
+                    return NotFound();
+
+                return PartialView("PizzaPartials/_Form", new PizzaModel(pizza));
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(PizzaModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var entry in ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        _logger.LogError($"Ошибка валидации поля {entry.Key}: {error.ErrorMessage}");
+                    }
+                }
+
+                ViewBag.AllSizes = _pizzaRepository.GetAvaiableSizes();
+                ViewBag.AllDoughTypes = _pizzaRepository.GetAvaiableDoughTypes();
+
+                return PartialView("PizzaPartials/_Form", model);
+            }
+
+            await _pizzaRepository.EditPizza(model);
+            return RedirectToAction("Index");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

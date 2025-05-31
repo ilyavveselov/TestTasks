@@ -1,9 +1,11 @@
 ﻿@model PizzaModel
+@inject IPizzaRepository pizzaRepository
 @using Task3.RazorHelpers
+@using Task3.Repositories
 @{
-    var (activeSize, activeType) = Html.GetActiveSelectors(Model);
-    var availableSizes = PizzaHelper.GetAvailableSizes();
-    var availableTypes = PizzaHelper.GetAvailableTypes();
+    var (activeSize, activeType) = await Html.GetActiveSelectors(Model, pizzaRepository);
+    var availableSizes = await PizzaHelper.GetAvailableSizes(pizzaRepository);
+    var availableTypes = await PizzaHelper.GetAvailableTypes(pizzaRepository);
     var isHeaderLink = ViewData["IsHeaderLink"] as bool? ?? false;
 }
 
@@ -22,6 +24,7 @@
             {
                 @Model.Name
             }
+            <span class="pizza-card-edit"><a href="@Url.Action("Edit", "Home", new { id = Model.Id })">Изменить</a></span>
         </span>
     </div>
 
