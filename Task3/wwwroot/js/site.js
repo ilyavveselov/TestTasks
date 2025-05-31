@@ -12,13 +12,25 @@
     return returnHTML;
 }
 
-function getAvaiableSizes() { return [30, 40, 60] };
-function getAvaiableTypes() { return ["Традиционное", "Толстое"] };
+function getAvaiableSizes() {
+    return $.ajax({
+        url: '/api/pizza/sizes',
+        method: 'GET',
+        dataType: 'json'
+    });
+}
 
-function getActiveSelectors(pizza) {
-    const avaiableSizes = getAvaiableSizes();
-    const avaiableTypes = getAvaiableTypes();
+function getAvaiableTypes() {
+    return $.ajax({
+        url: '/api/pizza/types',
+        method: 'GET',
+        dataType: 'json'
+    });
+}
 
+async function getActiveSelectors(pizza) {
+    const avaiableSizes = await getAvaiableSizes();
+    const avaiableTypes = await getAvaiableTypes();
     const activeSize = pizza.sizes.includes(avaiableSizes[0])
         ? avaiableSizes[0]
         : pizza.sizes.find(size => avaiableSizes.includes(size));
@@ -32,8 +44,8 @@ function getActiveSelectors(pizza) {
     }
     return { sizes: sizesHTML, types: typesHTML }
 }
-function renderPizzaCard(pizza) {
-    const selectorsHTML = getActiveSelectors(pizza);
+async function renderPizzaCard(pizza) {
+    const selectorsHTML = await getActiveSelectors(pizza);
     const hitHTML = pizza.isHit
         ? '<span class="pizza-card-hit">HIT</span>'
         : '';
@@ -75,9 +87,9 @@ function renderPizzaCard(pizza) {
         `;
     return card;
 }
-function renderModalPizzaCard(pizza) {
+async function renderModalPizzaCard(pizza) {
     pizza = JSON.parse(pizza);
-    const selectorsHTML = getActiveSelectors(pizza);
+    const selectorsHTML = await getActiveSelectors(pizza);
     const hitHTML = pizza.isHit
         ? '<span class="pizza-card-hit">HIT</span>'
         : '';
@@ -136,12 +148,12 @@ function setRedirectToModalOnAllPizzas() {
         const pizzaId = parent.data('id');
         if (pizzaId) {
             $.ajax({
-                url: "/Home/GetPizzaByIdJson",
+                url: "/api/pizza/getPizzaById",
                 type: "GET",
                 data: { id: pizzaId },
                 dataType: "html",
-                success: function (pizza) {
-                    const pizzaHtml = renderModalPizzaCard(pizza);
+                success: async function (pizza) {
+                    const pizzaHtml = await renderModalPizzaCard(pizza);
                     $('#pizzaModal .modal-dialog').html(pizzaHtml);
                     $('#pizzaModal').modal('show');
                 },

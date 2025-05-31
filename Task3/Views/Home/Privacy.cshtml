@@ -15,14 +15,14 @@
     const pizzaContainer = $('#pizza-container');
 
     $.ajax({
-        url: '/Home/GetAll',
+        url: '/api/pizza/getAllPizzas',
         method: 'GET',
-        success: function(data){
+        success: async function(data){
             pizzaContainer.empty();
-            data.forEach((pizza) => {
-                const cardHtml = renderPizzaCard(pizza);
-                pizzaContainer.append(cardHtml);
-            })
+            for (const pizza of data) {
+            const cardHtml = await renderPizzaCard(pizza);
+            pizzaContainer.append(cardHtml);
+            }
         },
         error: function(data) {
             console.log(data);
