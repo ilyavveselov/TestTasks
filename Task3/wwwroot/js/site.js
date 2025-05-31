@@ -174,3 +174,80 @@ function setRedirectToModalOnAllPizzas() {
         }
     });
 }
+
+function openEditPizzaModal(pizzaId) {
+    $.ajax({
+        url: '/Home/Edit',
+        type: 'GET',
+        data: { id: pizzaId },
+        success: function (html) {
+            $('#pizzaModal .modal-dialog').html(html);
+            $('#pizzaModal').modal('show');
+            $('#pizzaModal').on('submit', 'form', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            $('#pizzaModal .modal-dialog').html(response);
+                        }
+                    },
+                    error: function () {
+                        $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка отправки формы</div>');
+                    }
+                });
+            });
+        },
+        error: function () {
+            $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки формы</div>');
+            $('#pizzaModal').modal('show');
+        }
+    });
+
+    $('#pizzaModal').on('hidden.bs.modal', function () {
+        $(this).find('.modal-dialog').empty();
+    });
+}
+
+function openCreatePizzaModal() {
+    $.ajax({
+        url: '/Home/Create',
+        type: 'GET',
+        success: function (html) {
+            $('#pizzaModal .modal-dialog').html(html);
+            $('#pizzaModal').modal('show');
+            $('#pizzaModal').on('submit', 'form', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            $('#pizzaModal .modal-dialog').html(response);
+                        }
+                    },
+                    error: function () {
+                        $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка отправки формы</div>');
+                    }
+                });
+            });
+        },
+        error: function () {
+            $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки формы</div>');
+            $('#pizzaModal').modal('show');
+        }
+    });
+
+    $('#pizzaModal').on('hidden.bs.modal', function () {
+        $(this).find('.modal-dialog').empty();
+    });
+}

@@ -95,7 +95,7 @@ namespace Task3.Controllers
             }
 
             await _pizzaRepository.CreatePizza(model);
-            return RedirectToAction("Index");
+            return Json(new { redirect = Url.Action("Index") });
         }
 
         [HttpGet]
@@ -128,14 +128,14 @@ namespace Task3.Controllers
                     }
                 }
 
-                ViewBag.AllSizes = _pizzaRepository.GetAvaiableSizes();
-                ViewBag.AllDoughTypes = _pizzaRepository.GetAvaiableDoughTypes();
+                ViewBag.AllSizes = await _pizzaRepository.GetAvaiableSizes();
+                ViewBag.AllDoughTypes = await _pizzaRepository.GetAvaiableDoughTypes();
 
                 return PartialView("PizzaPartials/_Form", model);
             }
 
             await _pizzaRepository.EditPizza(model);
-            return RedirectToAction("Index");
+            return Json(new { redirect = Url.Action("Index") });
         }
 
         [HttpPost]

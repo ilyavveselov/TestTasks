@@ -26,7 +26,7 @@
                 @Model.Name
             }
         </span>
-        <span class="pizza-card-edit"><a href="@Url.Action("Edit", "Home", new { id = Model.Id })">Изменить</a></span>
+        <button class="pizza-card-edit" onclick="openEditPizzaModal(@Model.Id)">Изменить</button>
         <span class="pizza-card-delete">
             <form asp-action="Delete" method="post" class="delete-form">
                 <input type="hidden" name="Id" value="@Model.Id" />
@@ -65,6 +65,7 @@
     <button class="in-cart-button">В корзину</button>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js"></script>
 <script>
     $(document).on('click', '.delete-btn', function(e) {
         e.preventDefault();
