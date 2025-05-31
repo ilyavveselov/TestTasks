@@ -79,35 +79,35 @@ namespace Task3.Repositories
                 await db.SaveChangesAsync();
             }
         }
-        public async Task EditPizza(PizzaModel model)
+        public async Task EditPizza(PizzaModel pizza)
         {
-            if (model == null) return;
+            if (pizza == null) return;
 
             using (var db = new PizzasStoreContext())
             {
                 var pizzaFromDb = await db.Pizzas
                     .Include(p => p.Sizes)
                     .Include(p => p.DoughTypes)
-                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                    .FirstOrDefaultAsync(p => p.Id == pizza.Id);
 
                 if (pizzaFromDb != null)
                 {
-                    pizzaFromDb.Name = model.Name;
-                    pizzaFromDb.Image = model.Image;
-                    pizzaFromDb.Description = model.Description;
-                    pizzaFromDb.Price = model.Price;
-                    pizzaFromDb.Weight = model.Weight;
-                    pizzaFromDb.CanHalf = model.CanHalf;
-                    pizzaFromDb.ShowHalf = model.ShowHalf;
-                    pizzaFromDb.IsHit = model.IsHit;
+                    pizzaFromDb.Name = pizza.Name;
+                    pizzaFromDb.Image = pizza.Image;
+                    pizzaFromDb.Description = pizza.Description;
+                    pizzaFromDb.Price = pizza.Price;
+                    pizzaFromDb.Weight = pizza.Weight;
+                    pizzaFromDb.CanHalf = pizza.CanHalf;
+                    pizzaFromDb.ShowHalf = pizza.ShowHalf;
+                    pizzaFromDb.IsHit = pizza.IsHit;
 
                     pizzaFromDb.Sizes.Clear();
                     pizzaFromDb.DoughTypes.Clear();
 
-                    if (model.Sizes != null && model.Sizes.Any())
+                    if (pizza.Sizes != null && pizza.Sizes.Any())
                     {
                         var sizesFromDb = await db.Sizes
-                            .Where(s => model.Sizes.Contains(s.Value))
+                            .Where(s => pizza.Sizes.Contains(s.Value))
                             .ToListAsync();
 
                         foreach (var size in sizesFromDb)
@@ -116,10 +116,10 @@ namespace Task3.Repositories
                         }
                     }
 
-                    if (model.Types != null && model.Types.Any())
+                    if (pizza.Types != null && pizza.Types.Any())
                     {
                         var doughsFromDb = await db.DoughTypes
-                            .Where(d => model.Types.Contains(d.Name))
+                            .Where(d => pizza.Types.Contains(d.Name))
                             .ToListAsync();
 
                         foreach (var dough in doughsFromDb)
@@ -133,7 +133,30 @@ namespace Task3.Repositories
             }
         }
 
+        public async Task DeletePizza(PizzaModel pizza)
+        {
+            using (var db = new PizzasStoreContext())
+            {
+                var pizzaToDelete = db.Pizzas
+                    .Include("Sizes")
+                    .Include("DoughTypes")
+                    .FirstOrDefault(p => p.Id == pizza.Id);
+                if (pizzaToDelete != null)
+                {
+                    var sizesToDelete = await db.Sizes
+                             .Where(s => pizza.Sizes.Contains(s.Value))
+                             .ToListAsync();
+                    var typesToDelete = await db.DoughTypes
+                             .Where(t => pizza.Types.Contains(t.Name))
+                             .ToListAsync();
+                    pizzaToDelete.Sizes.Clear();
+                    pizzaToDelete.DoughTypes.Clear();
 
+                    db.Pizzas.Remove(pizzaToDelete);
+                    await db.SaveChangesAsync();
+                }
+            }
+        }
 
     }
 }

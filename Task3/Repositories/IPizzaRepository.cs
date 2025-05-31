@@ -15,5 +15,7 @@ namespace Task3.Repositories
         Task<List<Size>> GetAvaiableSizes();
 
         Task<List<DoughType>> GetAvaiableDoughTypes();
+
+        Task DeletePizza(PizzaModel pizza);
     }
 }

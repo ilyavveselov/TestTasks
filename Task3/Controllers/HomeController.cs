@@ -89,8 +89,8 @@ namespace Task3.Controllers
                         _logger.LogError($"Ошибка валидации поля {entry.Key}: {error.ErrorMessage}");
                     }
                 }
-                ViewBag.AllSizes = _pizzaRepository.GetAvaiableSizes();
-                ViewBag.AllDoughTypes = _pizzaRepository.GetAvaiableDoughTypes();
+                ViewBag.AllSizes = await _pizzaRepository.GetAvaiableSizes();
+                ViewBag.AllDoughTypes = await _pizzaRepository.GetAvaiableDoughTypes();
                 return PartialView("PizzaPartials/_Form", model);
             }
 
@@ -137,6 +137,14 @@ namespace Task3.Controllers
             await _pizzaRepository.EditPizza(model);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(PizzaModel pizza)
+        {
+            await _pizzaRepository.DeletePizza(pizza);
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

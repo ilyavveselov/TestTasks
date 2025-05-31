@@ -20,8 +20,8 @@
         success: async function(data){
             pizzaContainer.empty();
             for (const pizza of data) {
-            const cardHtml = await renderPizzaCard(pizza);
-            pizzaContainer.append(cardHtml);
+                const cardHtml = await renderPizzaCard(pizza);
+                pizzaContainer.append(cardHtml);
             }
         },
         error: function(data) {

@@ -17,14 +17,21 @@
         }
         <img class="pizza-card-img" src="@Model.Image" alt="@Model.Name" />
         <span class="pizza-card-name">
-            @if(isHeaderLink){
-                <a href="@Url.Action("Details", "Home", new {id = Model.Id})">@Model.Name</a>
+            @if (isHeaderLink)
+            {
+                <a href="@Url.Action("Details", "Home", new { id = Model.Id })">@Model.Name</a>
             }
             else
             {
                 @Model.Name
             }
-            <span class="pizza-card-edit"><a href="@Url.Action("Edit", "Home", new { id = Model.Id })">Изменить</a></span>
+        </span>
+        <span class="pizza-card-edit"><a href="@Url.Action("Edit", "Home", new { id = Model.Id })">Изменить</a></span>
+        <span class="pizza-card-delete">
+            <form asp-action="Delete" method="post" class="delete-form">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <button type="button" class="btn btn-danger delete-btn">Удалить</button>
+            </form>
         </span>
     </div>
 
@@ -57,3 +64,17 @@
     </div>
     <button class="in-cart-button">В корзину</button>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).on('click', '.delete-btn', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var pizzaName = $(this).closest('.pizza-card').find('.pizza-card-name').text();
+        var form = $(this).closest('.delete-form');
+
+        if (confirm(`Точно удалить "${pizzaName.trim()}"?`)) {
+            form.submit();
+        }
+        return false;
+    });
+</script>
