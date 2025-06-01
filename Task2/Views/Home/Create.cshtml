@@ -1,0 +1,62 @@
+﻿@model Task2.Models.PizzaModel
+@using Task2.RazorHelpers;
+@{
+
+    ViewData["Title"] = "Создание пиццы";
+
+    var availableSizes = PizzaHelper.GetAvailableSizes();
+    var availableTypes = PizzaHelper.GetAvailableTypes();
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Ссылка на изображение</label>
+        <input asp-for="Image" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Описание</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Доступные размеры</label><br />
+        @foreach (var size in availableSizes)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="Sizes" value="@size" id="size_@size" />
+                <label class="form-check-label" for="size_@size">@size см</label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Тип теста</label><br />
+        @foreach (var type in availableTypes)
+        {
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="Types" value="@type" id="type_@type" />
+                <label class="form-check-label" for="type_@type">@type</label>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price">Цена (₽)</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Weight">Вес (г)</label>
+        <input asp-for="Weight" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Создать</button>
+</form>
