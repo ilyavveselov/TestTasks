@@ -1,4 +1,5 @@
 ﻿@model Task3.Models.PizzaModel
+@using Task3.RazorHelpers
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title">@Model.Name</h5>
@@ -22,8 +23,13 @@
 
         <div class="form-group">
             <label asp-for="Image"></label>
-            <input asp-for="Image" class="form-control" />
-            <span asp-validation-for="Image" class="text-danger"></span>
+            <select asp-for="Image" class="form-control">
+                <option value="">Выберите изображение... (не выбирайте, если нет подходящей картинки)</option>
+                @foreach (var image in Html.GetAvailableImages())
+                {
+                    <option value="@image">@image</option>
+                }
+            </select>
         </div>
 
         <div class="form-group">

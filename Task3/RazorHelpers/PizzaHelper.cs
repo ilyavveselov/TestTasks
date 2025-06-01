@@ -58,5 +58,14 @@ namespace Task3.RazorHelpers
             }
             return new HtmlString(resultHtml.ToString());
         }
+
+        public static List<string> GetAvailableImages(this IHtmlHelper htmlHelper)
+        {
+            var imageDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "pizzas");
+            var imageFiles = Directory.GetFiles(imageDir)
+                                      .Select(path => "/images/pizzas/" + Path.GetFileName(path))
+                                      .ToList();
+            return imageFiles;
+        }
     }
 }

@@ -9,7 +9,7 @@ public partial class Pizza
 
     public string Name { get; set; } = null!;
 
-    public string Image { get; set; } = null!;
+    public string? Image { get; set; } = string.Empty;
 
     public string Description { get; set; } = null!;
 

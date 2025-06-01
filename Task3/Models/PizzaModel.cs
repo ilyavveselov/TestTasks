@@ -10,9 +10,8 @@ namespace Task3.Models
         [Display(Name="Название")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
         [Display(Name = "Путь до изображения")]
-        public string Image { get; set; } = string.Empty;
+        public string? Image { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Пицца обязательно должна иметь описание")]
         [Display(Name = "Описание")]
