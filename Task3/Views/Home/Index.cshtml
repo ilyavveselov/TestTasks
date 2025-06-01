@@ -1,0 +1,31 @@
+﻿@model List<Task3.Models.PizzaModel>
+@using Task3.RazorHelpers
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="pizza-container">
+    @foreach (var pizza in Model)
+    {
+        @await Html.PartialAsync("PizzaPartials/_Card", pizza, new ViewDataDictionary(ViewData)
+        {
+            { "IsHeaderLink", true}
+        })
+    }
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js"></script>
+<script>
+    $(document).on('click', '.pizza-card-img', function() {
+       const parent = $(this).closest('.pizza-card');
+       const pizzaId = parent.data('id');
+       if(pizzaId){
+           window.location.href = `/Home/Details/${pizzaId}`;
+       }
+       else{
+          console.log(parent, "не имеет атрибут data-id");
+          $('#pizzaModal .modal-dialog').html('<div class="alert alert-danger">Ошибка загрузки данных</div>');
+          $('#pizzaModal').modal('show');
+       }
+    });
+</script>
