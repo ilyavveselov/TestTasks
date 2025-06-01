@@ -6,11 +6,11 @@ namespace Task3.Repositories
 {
     public class PizzaRepository : IPizzaRepository
     {
-        public List<PizzaModel> GetAllPizzas()
+        public async Task<List<PizzaModel>> GetAllPizzas()
         {
             using (PizzasStoreContext db = new PizzasStoreContext())
             {
-                var pizzasFromDb = db.Pizzas.Include("Sizes").Include("DoughTypes");
+                var pizzasFromDb = await db.Pizzas.Include("Sizes").Include("DoughTypes").ToListAsync(); ;
                 var pizzas = pizzasFromDb.Select(p => new PizzaModel(p)).ToList();
                 return pizzas;
             }
@@ -32,11 +32,11 @@ namespace Task3.Repositories
                 return types;
             }
         }
-        public PizzaModel GetPizzaById(int id)
+        public async Task<PizzaModel> GetPizzaById(int id)
         {
             using (PizzasStoreContext db = new PizzasStoreContext())
             {
-                var foundedPizzaFromDb = db.Pizzas.Include("Sizes").Include("DoughTypes").FirstOrDefault(p => p.Id == id);
+                var foundedPizzaFromDb = await db.Pizzas.Include("Sizes").Include("DoughTypes").FirstOrDefaultAsync(p => p.Id == id);
                 if (foundedPizzaFromDb != null)
                 {
                     var foundedPizza = new PizzaModel(foundedPizzaFromDb);
@@ -137,10 +137,10 @@ namespace Task3.Repositories
         {
             using (var db = new PizzasStoreContext())
             {
-                var pizzaToDelete = db.Pizzas
+                var pizzaToDelete = await db.Pizzas
                     .Include("Sizes")
                     .Include("DoughTypes")
-                    .FirstOrDefault(p => p.Id == pizza.Id);
+                    .FirstOrDefaultAsync(p => p.Id == pizza.Id);
                 if (pizzaToDelete != null)
                 {
                     var sizesToDelete = await db.Sizes

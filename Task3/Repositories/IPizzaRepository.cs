@@ -4,9 +4,9 @@ namespace Task3.Repositories
 {
     public interface IPizzaRepository
     {
-        List<PizzaModel> GetAllPizzas();
+        Task<List<PizzaModel>> GetAllPizzas();
 
-        PizzaModel GetPizzaById(int id);
+        Task<PizzaModel> GetPizzaById(int id);
 
         Task CreatePizza(PizzaModel pizza);
 

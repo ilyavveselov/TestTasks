@@ -29,9 +29,9 @@ namespace Task3.Controllers
             return Ok(types.Select(s => s.Name));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var pizzas = _pizzaRepository.GetAllPizzas();
+            var pizzas = await _pizzaRepository.GetAllPizzas();
             return View(pizzas);
         }
 
@@ -40,28 +40,28 @@ namespace Task3.Controllers
             return View();
         }
 
-        public IActionResult IndexNew()
+        public async Task<IActionResult> IndexNew()
         {
-            var pizzas = _pizzaRepository.GetAllPizzas();
+            var pizzas = await _pizzaRepository.GetAllPizzas();
             return View(pizzas);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var pizza = _pizzaRepository.GetPizzaById(id);
+            var pizza = await _pizzaRepository.GetPizzaById(id);
             return View(pizza);
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var pizzas = _pizzaRepository.GetAllPizzas();
+            var pizzas = await _pizzaRepository.GetAllPizzas();
             return Json(pizzas);
         }
 
         [HttpGet]
-        public IActionResult GetPizzaById(int id)
+        public async Task<IActionResult> GetPizzaById(int id)
         {
-            var pizza = _pizzaRepository.GetPizzaById(id);
+            var pizza = await _pizzaRepository.GetPizzaById(id);
             if (pizza == null)
             {
                 _logger.LogError("Пицца не найдена");
@@ -71,9 +71,9 @@ namespace Task3.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPizzaByIdJSON(int id)
+        public async Task<IActionResult> GetPizzaByIdJSON(int id)
         {
-            var pizza = _pizzaRepository.GetPizzaById(id);
+            var pizza = await _pizzaRepository.GetPizzaById(id);
             if (pizza == null)
             {
                 _logger.LogError("Пицца не найдена");
