@@ -8,6 +8,17 @@ a {
         text-decoration: none;
     }
 
+button {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    box-shadow: none;
+    outline: none;
+}
+
 #pizza-container {
     display: flex;
     flex-wrap: wrap;
@@ -59,6 +70,18 @@ a {
     font-weight: bold;
     color: black;
     margin-bottom: 8px;
+}
+
+.pizza-card-buttons {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 20px;
+    font-size: 24px;
+}
+
+.pizza-card-edit:hover {
+    cursor: pointer;
 }
 
 .pizza-card-description {
