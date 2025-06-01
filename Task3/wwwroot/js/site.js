@@ -63,8 +63,21 @@ async function renderPizzaCard(pizza) {
                          src="${pizza.image}" alt=${pizza.name}/>
                     <span class="pizza-card-name">
                             ${pizza.name}
-                        </a>
                     </span>
+                    <div class="pizza-card-buttons">
+                        <span class="pizza-card-edit" onclick="openEditPizzaModal(${pizza.id})">
+                            <i class="bi bi-pencil"></i>
+                        </span>
+                        <span class="pizza-card-delete">
+                            <form action="/Home/Delete" method="post" class="delete-form">
+                                <input type="hidden" name="Id" value="${pizza.id}" />
+                                <input type="hidden" name="returnUrl" value="${window.location.pathname}" />
+                                <button type="submit" class="btn btn-danger delete-btn">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </form>
+                        </span>
+                    </div>
                 </div>
                 <div class="pizza-card-description">
                     ${pizza.description}
@@ -227,4 +240,18 @@ function openEditPizzaModal(pizzaId) {
 
 function openCreatePizzaModal() {
     handleFormModal('create');
+}
+
+function setConfrimOnDelete() {
+    $(document).on('click', '.delete-btn', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var pizzaName = $(this).closest('.pizza-card').find('.pizza-card-name').text();
+        var form = $(this).closest('.delete-form');
+
+        if (confirm(`Точно удалить "${pizzaName.trim()}"?`)) {
+            form.submit();
+        }
+        return false;
+    });
 }
