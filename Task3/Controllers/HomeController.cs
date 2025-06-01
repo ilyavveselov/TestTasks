@@ -16,6 +16,19 @@ namespace Task3.Controllers
             _pizzaRepository = pizzaRepository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAvaiableSizes()
+        {
+            var sizes = await _pizzaRepository.GetAvaiableSizes();
+            return Ok(sizes.Select(s => s.Value));
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAvaiableTypes()
+        {
+            var types = await _pizzaRepository.GetAvaiableDoughTypes();
+            return Ok(types.Select(s => s.Name));
+        }
+
         public IActionResult Index()
         {
             var pizzas = _pizzaRepository.GetAllPizzas();

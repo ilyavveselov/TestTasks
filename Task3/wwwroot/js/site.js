@@ -14,7 +14,7 @@
 
 function getAvaiableSizes() {
     return $.ajax({
-        url: '/api/pizza/sizes',
+        url: '/Home/GetAvaiableSizes',
         method: 'GET',
         dataType: 'json'
     });
@@ -22,7 +22,7 @@ function getAvaiableSizes() {
 
 function getAvaiableTypes() {
     return $.ajax({
-        url: '/api/pizza/types',
+        url: '/Home/GetAvaiableTypes',
         method: 'GET',
         dataType: 'json'
     });
@@ -148,7 +148,7 @@ function setRedirectToModalOnAllPizzas() {
         const pizzaId = parent.data('id');
         if (pizzaId) {
             $.ajax({
-                url: "/api/pizza/getPizzaById",
+                url: "/Home/GetPizzaByIdJSON",
                 type: "GET",
                 data: { id: pizzaId },
                 dataType: "html",
