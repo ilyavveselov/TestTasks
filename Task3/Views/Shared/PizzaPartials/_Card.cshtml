@@ -30,6 +30,7 @@
         <span class="pizza-card-delete">
             <form asp-action="Delete" method="post" class="delete-form">
                 <input type="hidden" name="Id" value="@Model.Id" />
+                <input type="hidden" name="returnUrl" id="returnUrl" value="@Context.Request.Path" />
                 <button type="button" class="btn btn-danger delete-btn">Удалить</button>
             </form>
         </span>

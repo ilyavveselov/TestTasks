@@ -129,7 +129,7 @@ namespace Task3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(PizzaModel model)
+        public async Task<IActionResult> Edit(PizzaModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -148,14 +148,14 @@ namespace Task3.Controllers
             }
 
             await _pizzaRepository.EditPizza(model);
-            return Json(new { redirect = Url.Action("Index") });
+            return Json(new { redirect = string.IsNullOrEmpty(returnUrl) ? Url.Action("Index") : returnUrl });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(PizzaModel pizza)
+        public async Task<IActionResult> Delete(PizzaModel pizza, string returnUrl)
         {
             await _pizzaRepository.DeletePizza(pizza);
-            return RedirectToAction("Index");
+            return Redirect(returnUrl);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
