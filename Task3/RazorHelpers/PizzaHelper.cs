@@ -21,11 +21,8 @@ namespace Task3.RazorHelpers
             var typeNames = availableTypes.Select(t => t.Name).ToList();
             return typeNames;
         }
-        public static async Task<(int activeSize, string activeType)> GetActiveSelectors(this IHtmlHelper html, PizzaModel model, IPizzaRepository pizzaRepository)
+        public static (int activeSize, string activeType) GetActiveSelectors(this IHtmlHelper html, PizzaModel model, List<int> sizeValues, List<string> typeNames)
         {
-            var sizeValues = await GetAvailableSizes(pizzaRepository);
-            var typeNames = await GetAvailableTypes(pizzaRepository);
-
             var activeSize = model.Sizes.Contains(sizeValues[0])
                 ? sizeValues[0]
                 : model.Sizes.FirstOrDefault(size => sizeValues.Contains(size));

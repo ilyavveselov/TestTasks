@@ -176,7 +176,7 @@ function setRedirectToModalOnAllPizzas() {
 }
 
 function handleFormModal(mode, pizzaId = null) {
-    const isEdit = mode;
+    const isEdit = mode === 'edit';
     const url = isEdit ? '/Home/Edit' : '/Home/Create';
     const requestData = isEdit ? { id: pizzaId } : {};
 

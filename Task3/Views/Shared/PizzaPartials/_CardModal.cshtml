@@ -3,9 +3,9 @@
 @using Task3.RazorHelpers
 @using Task3.Repositories
 @{
-    var (activeSize, activeType) = await Html.GetActiveSelectors(Model, pizzaRepository);
     var availableSizes = await PizzaHelper.GetAvailableSizes(pizzaRepository);
     var availableTypes = await PizzaHelper.GetAvailableTypes(pizzaRepository);
+    var (activeSize, activeType) = Html.GetActiveSelectors(Model, availableSizes, availableTypes);
 }
 <div class="modal-content">
     <div class="modal-header">
