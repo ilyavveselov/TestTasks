@@ -246,3 +246,14 @@ a {
     padding: 10px 10px;
     border-radius: 50px;
 }
+
+.pizza-form {
+    padding: 10px;
+}
+
+    .pizza-form .form-checkers,
+    .pizza-form .selectors .selectors-checkers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
