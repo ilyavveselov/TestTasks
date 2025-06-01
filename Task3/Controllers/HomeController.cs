@@ -91,7 +91,7 @@ namespace Task3.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(PizzaModel model)
+        public async Task<IActionResult> Create(PizzaModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -108,7 +108,7 @@ namespace Task3.Controllers
             }
 
             await _pizzaRepository.CreatePizza(model);
-            return Json(new { redirect = Url.Action("Index") });
+            return Json(new { redirect = string.IsNullOrEmpty(returnUrl) ? Url.Action("Index") : returnUrl });
         }
 
         [HttpGet]

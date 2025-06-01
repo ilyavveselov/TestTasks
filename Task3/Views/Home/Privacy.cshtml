@@ -15,7 +15,7 @@
     const pizzaContainer = $('#pizza-container');
 
     $.ajax({
-        url: '/api/pizza/getAllPizzas',
+        url: '/Home/GetAll',
         method: 'GET',
         success: async function(data){
             pizzaContainer.empty();
